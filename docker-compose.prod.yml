@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  empower-reports:
+    image: tu-usuario/empower-reports:latest
+    container_name: empower-reports-app
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./data:/usr/share/nginx/html/data:ro
+    networks:
+      - empower-network
+
+networks:
+  empower-network:
+    driver: bridge

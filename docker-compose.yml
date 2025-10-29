@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  empower-reports:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: empower-reports-app
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # Montar archivos de datos si es necesario
+      - ./public/data:/usr/share/nginx/html/data:ro
+    networks:
+      - empower-network
+
+networks:
+  empower-network:
+    driver: bridge
