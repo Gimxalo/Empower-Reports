@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   empower-reports:
-    image: tu-usuario/empower-reports:latest
+    image: gimxalo/empower_reports:latest
     container_name: empower-reports-app
     ports:
       - "80:80"
