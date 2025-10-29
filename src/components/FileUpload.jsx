@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react'
 import { BlobServiceClient } from '@azure/storage-blob'
+import { useAuth } from '../contexts/AuthContext'
 import './FileUpload.css'
 
-const FileUpload = () => {
+const FileUpload = ({ compact = true, onAuthRequired }) => {
   const [files, setFiles] = useState([]) // File[]
   const [uploading, setUploading] = useState(false)
   const [progressByFile, setProgressByFile] = useState({}) // { filename: percent }
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const { isAuthenticated, user } = useAuth()
 
   // Configuración desde variables de entorno
   const accountName = import.meta.env.VITE_AZURE_ACCOUNT_NAME
@@ -103,6 +105,15 @@ const FileUpload = () => {
   }
 
   const handleUpload = async () => {
+    // Verificar autenticación primero
+    if (!isAuthenticated) {
+      setError('Debes iniciar sesión para subir archivos')
+      if (onAuthRequired) {
+        onAuthRequired()
+      }
+      return
+    }
+
     if (!files || files.length === 0) {
       setError('Por favor selecciona uno o más archivos primero')
       return
@@ -146,7 +157,7 @@ const FileUpload = () => {
   }
 
   return (
-    <div className="file-upload-container">
+    <div className={`file-upload-container ${compact ? 'compact' : ''}`}>
       <div 
         className={`file-drop-zone ${files.length ? 'has-file' : ''}`}
         onDrop={handleDrop}
@@ -154,10 +165,20 @@ const FileUpload = () => {
       >
         <div className="upload-icon">📁</div>
         <p className="upload-text">
-          {files.length ? `${files.length} archivo(s) seleccionado(s)` : 'Arrastra tus archivos .pbit aquí'}
+          {!isAuthenticated 
+            ? 'Inicia sesión para subir archivos' 
+            : files.length 
+              ? `${files.length} archivo(s) seleccionado(s)` 
+              : 'Arrastra tus archivos .pbit aquí'
+          }
         </p>
         <p className="upload-subtext">
-          {files.length ? 'o selecciona más' : 'o haz clic para seleccionar'}
+          {!isAuthenticated 
+            ? 'Necesitas estar loggeado para usar esta función' 
+            : files.length 
+              ? 'o selecciona más' 
+              : 'o haz clic para seleccionar'
+          }
         </p>
         <input
           id="file-input"
@@ -213,21 +234,27 @@ const FileUpload = () => {
       )}
 
       <button 
-        className="upload-button"
+        className="upload-button upload-button--primary"
         onClick={handleUpload}
-        disabled={files.length === 0 || uploading}
+        disabled={!isAuthenticated || files.length === 0 || uploading}
       >
-        {uploading ? 'Subiendo...' : 'Subir Archivo(s)'}
+        {!isAuthenticated 
+          ? 'Inicia sesión para subir' 
+          : uploading 
+            ? 'Subiendo...' 
+            : 'Cargar Archivo'
+        }
       </button>
-
-      <div className="help-text">
-        <p><strong>¿Cómo obtener tu archivo .pbit?</strong></p>
-        <ol>
-          <li>Abre el .pbix en Power BI Desktop</li>
-          <li>Archivo → Exportar → Plantilla de Power BI (.pbit)</li>
-          <li>Guarda y arrastra aquí</li>
-        </ol>
-      </div>
+      {!compact && (
+        <div className="help-text">
+          <p><strong>¿Cómo obtener tu archivo .pbit?</strong></p>
+          <ol>
+            <li>Abre el .pbix en Power BI Desktop</li>
+            <li>Archivo → Exportar → Plantilla de Power BI (.pbit)</li>
+            <li>Guarda y arrastra aquí</li>
+          </ol>
+        </div>
+      )}
     </div>
   )
 }

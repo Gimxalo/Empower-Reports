@@ -1,45 +1,52 @@
 .file-upload-container {
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  font-family: "Segoe UI", "Arial", "Helvetica", sans-serif;
 }
+.file-upload-container.compact { max-width: 460px; margin: 0 auto; }
 
 .file-drop-zone {
-  border: 2px dashed #cbd5e0;
-  border-radius: 12px;
-  padding: 40px 20px;
+  border: 3px dashed #F3C911;
+  border-radius: 16px;
+  padding: 60px 30px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: #f7fafc;
+  background: #F9F9F9;
   position: relative;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .file-drop-zone:hover {
-  border-color: #4299e1;
-  background: #ebf8ff;
+  border-color: #FFE75A;
+  background: #FFFBF0;
 }
 
 .file-drop-zone.has-file {
-  border-color: #48bb78;
-  background: #f0fff4;
+  border-color: #F3C911;
+  background: #FFFBF0;
 }
 
 .upload-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .upload-text {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 12px;
 }
 
 .upload-subtext {
-  font-size: 0.9rem;
-  color: #718096;
+  font-size: 1rem;
+  color: #888888;
+  font-weight: 500;
 }
 
 .file-input {
@@ -134,8 +141,8 @@
 
 .upload-button {
   width: 100%;
-  background: #4299e1;
-  color: white;
+  background: #F3C911;
+  color: #333333;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -144,19 +151,21 @@
   cursor: pointer;
   transition: background 0.3s ease;
   margin: 20px 0;
+  font-family: "Segoe UI", "Arial", "Helvetica", sans-serif;
 }
 
 .upload-button:hover:not(:disabled) {
-  background: #3182ce;
+  background: #FFE75A;
 }
 
 .upload-button:disabled {
-  background: #a0aec0;
+  background: #CCCCCC;
   cursor: not-allowed;
+  color: #888888;
 }
 
 .help-text {
-  background: #f7fafc;
+  background: #F9F9F9;
   border-radius: 8px;
   padding: 16px;
   margin-top: 20px;
@@ -165,13 +174,13 @@
 
 .help-text p {
   font-weight: 600;
-  color: #2d3748;
+  color: #333333;
   margin-bottom: 8px;
 }
 
 .help-text ol {
   margin-left: 16px;
-  color: #4a5568;
+  color: #555555;
 }
 
 .help-text li {
